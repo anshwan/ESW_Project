@@ -14,7 +14,7 @@ def main(Display):
 
     #배경화면
     background_image = Image.open('./images/space3.png').convert('RGBA')
-    re_background_image = background_image.resize((1280,1280))
+    re_background_image = background_image.resize((240 ,240))
     my_image.paste(re_background_image, (0,0), re_background_image)
 
     #my_draw.rectangle((0, 0, Display.width, Display.height))

@@ -45,14 +45,15 @@ class Stars:
 
     def draw_star(self, draw, background):
         background.paste(self.appearance, (self.position_x, self.position_y), self.appearance)
+        #print("Star Position:", self.position_x, self.position_y, self.appearance.width, self.appearance.height)
 
     def check_collision(self, enemies):
         for enemy in enemies:
             if(
-                self.position_x < enemy.position_x + enemy.appearance.width and 
-                self.position_x + self.appearance.width > enemy.position_x and
-                self.position_y < enemy.position_y + enemy.appearance.height and
-                self.position_y + self.appearance.height > enemy.position_y
+                self.position_x < enemy.position_x + enemy.appearance.width // 2 and 
+                self.position_x + self.appearance.width // 2 > enemy.position_x  and
+                self.position_y < enemy.position_y + enemy.appearance.height // 2 and
+                self.position_y + self.appearance.height // 2 > enemy.position_y
             ):
                 return enemy
         return None
