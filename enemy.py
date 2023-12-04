@@ -15,7 +15,7 @@ class Asteroid:
     def move(self):
         self.position_y += self.speed
 
-    def draw_asteroid(self, draw, background):
+    def draw(self, draw, background):
         background.paste(self.appearance, (self.position_x, self.position_y), self.appearance)
         #print("Asteroid Position:", self.position_x, self.position_y)
         #draw.bitmap((self.position_x, self.position_y), self.appearance, fill = (255,255,255,255))
@@ -32,10 +32,9 @@ class Meteor:
     def move(self):
         self.position_y += self.speed
 
-    def draw_meteor(self, draw, background):
+    def draw(self, draw, background):
         background.paste(self.appearance, (self.position_x, self.position_y), self.appearance)
-        #print("Meteor Position:", self.position_x, self.position_y)
-        #draw.bitmap((self.position_x, self.position_y), self.appearance, fill = (255,255,255,255))
+
 
 class Missile:
     def __init__(self):
@@ -49,10 +48,8 @@ class Missile:
     def move(self):
         self.position_y += self.speed
 
-    def draw_missile(self, draw, background):
+    def draw(self, draw, background):
         background.paste(self.appearance, (self.position_x, self.position_y), self.appearance)
-        #print("Missile Position:", self.position_x, self.position_y)
-        #draw.bitmap((self.position_x, self.position_y), self.appearance, fill = (255,255,255,255))
 
                 
 

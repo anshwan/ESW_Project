@@ -5,7 +5,7 @@ from PIL import Image, ImageDraw, ImageFont
 from Character import Stars
 from MyBoard import Display
 from bullet import Bullet
-from starcandy import StarCandy
+from starcandy import RedStarCandy, BlueStarCandy, YellowStarCandy
 from enemy import Asteroid, Meteor, Missile
 
 def main(Display):
@@ -21,21 +21,22 @@ def main(Display):
     Display.disp.image(my_image)
 
     # 잔상이 남지 않는 코드
-    my_star = Stars(Display.width, Display.height)  # Character 대신에 my_star로 이름 변경
+    my_star = Stars(Display.width, Display.height)  
 
     #불렛 추가
     bullets=[]
 
     # 적 추가   
+
     enemies = [Asteroid(), Meteor(), Missile()]
 
+    candies = [RedStarCandy(), BlueStarCandy(), YellowStarCandy()]
+    
     last_enemy_added_time = time.time()
 
-    #12/4
-    #candy_images = ['./images/starcandy_blue.png', './images/starcandy_red.png', './images/starcandy_yellow.png' ]
+    fnt = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 15)
 
-    candies = [StarCandy(Display.width, Display.height) for _ in range (4)]
-
+    
     while True:
 
         command = {'move': False, 'up_pressed': False, 'down_pressed': False, 'left_pressed': False, 'right_pressed': False}
@@ -61,11 +62,13 @@ def main(Display):
         if current_time - last_enemy_added_time >= 5:
             enemy_type = random.choice([Asteroid, Meteor, Missile])
             enemies.append(enemy_type())
+            starcandy_type = random.choice([RedStarCandy, BlueStarCandy, YellowStarCandy])
+            candies.append(starcandy_type())
+            starcandy_type = random.choice([RedStarCandy, BlueStarCandy, YellowStarCandy])
+            candies.append(starcandy_type())
             last_enemy_added_time = current_time
 
         my_star.move(command)
-
-
 
         collided_enemy = my_star.check_collision(enemies)
         if collided_enemy and collided_enemy.is_alive:
@@ -81,15 +84,20 @@ def main(Display):
         my_image.paste(re_background_image, (0,0))
         my_star.draw_star(my_draw, my_image) 
 
+
+
+        # LIFE DISPLAY
+        x_offset = -35
+        for i in range(my_star.life) :
+            my_image.paste(my_star.life_image_resize,(x_offset, -65) , my_star.life_image_resize)
+            x_offset += 15
+        my_draw.text((0, 15), "LIFE ", font=fnt, fill=(255,255,255))   
+
+
         for enemy in enemies:
             if enemy.is_alive:
                 enemy.move()
-                if isinstance(enemy, Asteroid):
-                    enemy.draw_asteroid(my_draw, my_image)
-                elif isinstance(enemy, Meteor):
-                    enemy.draw_meteor(my_draw, my_image)
-                elif isinstance(enemy, Missile):
-                    enemy.draw_missile(my_draw, my_image) 
+                enemy.draw(my_draw, my_image)
 
         for candy in candies:
             candy.move()

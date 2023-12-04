@@ -10,8 +10,11 @@ class Stars:
         self.position_y = int(height // 2 - self.appearance.height/2 + 90)
         self.center = np.array([self.position_x + self.appearance.width / 2, self.position_y + self.appearance.height / 2])
         self.state = None
-        self.life =  5 #목숨 초기값
+        self.life =  5 # 목숨 초기값
         self.life_images = []
+        self.life_image = Image.open('./images/life.png').convert("RGBA")
+        self.life_image_resize = self.life_image.resize((150 ,150))
+        
 
 
     #def calculate_center(self):
