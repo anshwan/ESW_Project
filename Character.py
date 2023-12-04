@@ -10,6 +10,9 @@ class Stars:
         self.position_y = int(height // 2 - self.appearance.height/2 + 90)
         self.center = np.array([self.position_x + self.appearance.width / 2, self.position_y + self.appearance.height / 2])
         self.state = None
+        self.life =  5 #목숨 초기값
+        self.life_images = []
+
 
     #def calculate_center(self):
         #self.center_x = int(self.width  / 2)
@@ -42,3 +45,15 @@ class Stars:
 
     def draw_star(self, draw, background):
         background.paste(self.appearance, (self.position_x, self.position_y), self.appearance)
+
+    def check_collision(self, enemies):
+        for enemy in enemies:
+            if(
+                self.position_x < enemy.position_x + enemy.appearance.width and 
+                self.position_x + self.appearance.width > enemy.position_x and
+                self.position_y < enemy.position_y + enemy.appearance.height and
+                self.position_y + self.appearance.height > enemy.position_y
+            ):
+                return enemy
+        return None
+        

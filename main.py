@@ -5,6 +5,7 @@ from PIL import Image, ImageDraw, ImageFont
 from Character import Stars
 from MyBoard import Display
 from bullet import Bullet
+from starcandy import StarCandy
 from enemy import Asteroid, Meteor, Missile
 
 def main(Display):
@@ -14,7 +15,7 @@ def main(Display):
     #배경화면
     background_image = Image.open('./images/space3.png').convert('RGBA')
     re_background_image = background_image.resize((1280,1280))
-    my_image.paste(re_background_image, (0,0))
+    my_image.paste(re_background_image, (0,0), re_background_image)
 
     #my_draw.rectangle((0, 0, Display.width, Display.height))
     Display.disp.image(my_image)
@@ -29,6 +30,11 @@ def main(Display):
     enemies = [Asteroid(), Meteor(), Missile()]
 
     last_enemy_added_time = time.time()
+
+    #12/4
+    #candy_images = ['./images/starcandy_blue.png', './images/starcandy_red.png', './images/starcandy_yellow.png' ]
+
+    candies = [StarCandy(Display.width, Display.height) for _ in range (4)]
 
     while True:
 
@@ -46,10 +52,10 @@ def main(Display):
         if not Display.button_R.value:  # right pressed
             command['right_pressed'] = True
             command['move'] = True
-        
         if not Display.button_A.value:
             bullet = Bullet(my_star.center, command)
             bullets.append(bullet)
+
 
         current_time = time.time()
         if current_time - last_enemy_added_time >= 5:
@@ -58,18 +64,36 @@ def main(Display):
             last_enemy_added_time = current_time
 
         my_star.move(command)
+
+
+
+        collided_enemy = my_star.check_collision(enemies)
+        if collided_enemy and collided_enemy.is_alive:
+            collided_enemy.is_alive = False
+            my_star.life -= 1
+            print(f"현재 목숨 : {my_star.life}")
+            time.sleep(0.01)
+
+        enemies = [enemy for enemy in enemies if enemy.is_alive]
+
+
         my_draw.rectangle((0, 0, int(Display.width), int(Display.height)), fill=(0, 0, 0, 100))
         my_image.paste(re_background_image, (0,0))
-        my_star.draw_star(my_draw, my_image)  # my_circle 대신에 my_star로 변경
+        my_star.draw_star(my_draw, my_image) 
 
         for enemy in enemies:
-            enemy.move()
-            if isinstance(enemy, Asteroid):
-                enemy.draw_asteroid(my_draw, my_image)
-            elif isinstance(enemy, Meteor):
-                enemy.draw_meteor(my_draw, my_image)
-            elif isinstance(enemy, Missile):
-                enemy.draw_missile(my_draw, my_image) 
+            if enemy.is_alive:
+                enemy.move()
+                if isinstance(enemy, Asteroid):
+                    enemy.draw_asteroid(my_draw, my_image)
+                elif isinstance(enemy, Meteor):
+                    enemy.draw_meteor(my_draw, my_image)
+                elif isinstance(enemy, Missile):
+                    enemy.draw_missile(my_draw, my_image) 
+
+        for candy in candies:
+            candy.move()
+            candy.draw(my_draw, my_image)
     
         for bullet in bullets:
             bullet.move()
