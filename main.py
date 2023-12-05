@@ -88,7 +88,7 @@ def main(Display):
 
         # 랜덤한 적과 사탕 생성 후 떨어트리는 코드
         current_time = time.time()
-        if current_time - end_time >= 7:
+        if current_time - end_time >= 3:
             enemy_type = random.choice([Asteroid, Meteor, Missile])
             enemies.append(enemy_type())
             for _ in range (2):
@@ -137,14 +137,9 @@ def main(Display):
         my_draw.text((0, 15), "LIFE ", font=fnt, fill=(255,255,255))  
 
 
-        # STAGE & 먹어야 하는 사탕 DISPLAY 
-        my_draw.text((0,0), f"STAGE {stage}", font=fnt, fill=(255,255,255))
-        my_image.paste(red_candy.appearance, (-35, 15), red_candy.appearance)
-        my_draw.text((10, 30), f"{get_candy[0]}/{stage_candy[0]}" , font = fnt, fill=(255,255,255))
-        my_image.paste(blue_candy.appearance, (0, 15), blue_candy.appearance)
-        my_draw.text((45,30), f"{get_candy[1]}/{stage_candy[1]}", font = fnt, fill = (255,255,255))
-        my_image.paste(yellow_candy.appearance, (35, 15), yellow_candy.appearance)
-        my_draw.text((80,30), f"{get_candy[2]}/{stage_candy[2]}", font = fnt, fill = (255,255,255))
+        # 초기 stage display
+        game.new_stage_display(my_image, my_draw, stage, get_candy, stage_candy, red_candy, blue_candy, yellow_candy, fnt)
+
 
         #stage를 clear 했는지 확인
         Isclear = game.stage_clear(stage, get_candy, stage_candy)
@@ -164,7 +159,6 @@ def main(Display):
             stage_candy = game.addcandy(stage, stage_candy)
             game.new_stage_display(my_image, my_draw, stage, get_candy, stage_candy, red_candy, blue_candy, yellow_candy, fnt)
             
-
 
         for enemy in enemies:
             if enemy.is_alive:
