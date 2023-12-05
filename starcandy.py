@@ -47,6 +47,23 @@ class YellowStarCandy:
     def draw(self, draw, background):
         background.paste(self.appearance, (self.position_x, self.position_y), self.appearance)
 
+class RainbowStarCandy:
+    def __init__(self):
+        self.image = Image.open('./images/starcandy_rainbow.png').convert("RGBA")
+        self.position_x = random.randint(-60,180)
+        self.position_y = -128
+        self.speed = int(random.uniform(2,5))
+        self.appearance = self.image.resize((64,64))
+
+    def move(self):
+        self.position_y += self.speed
+        
+            
+    def draw(self, draw, background):
+        background.paste(self.appearance, (self.position_x, self.position_y), self.appearance)
+
+    
+
 
 
 

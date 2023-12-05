@@ -5,7 +5,7 @@ from PIL import Image, ImageDraw, ImageFont
 from Character import Stars
 from MyBoard import Display
 from bullet import Bullet
-from starcandy import RedStarCandy, BlueStarCandy, YellowStarCandy
+from starcandy import RedStarCandy, BlueStarCandy, YellowStarCandy, RainbowStarCandy
 from enemy import Asteroid, Meteor, Missile
 
 def main(Display):
@@ -27,14 +27,22 @@ def main(Display):
     bullets=[]
 
     # 적 추가   
-
     enemies = [Asteroid(), Meteor(), Missile()]
 
-    candies = [RedStarCandy(), BlueStarCandy(), YellowStarCandy()]
+    # 별사탕 추가
+    candies = [RedStarCandy(), BlueStarCandy(), YellowStarCandy(), RainbowStarCandy()]
     
-    last_enemy_added_time = time.time()
+    end_time = time.time()
 
     fnt = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 15)
+
+    round1_candy = []   
+    for _ in range(3):
+        random_number = random.randint(3, 5)
+        round1_candy.append(random_number)
+    get_blue = 0
+    get_red = 0
+    get_yellow = 0
 
     
     while True:
@@ -58,15 +66,22 @@ def main(Display):
             bullets.append(bullet)
 
 
+        #star_candy = StarCandy(image_paths)
+        #star_candies.append(star_candy)
+        
+
+        #background = Image.new("RGBA", (240, 240), (255, 255, 255, 255))
+        #draw = ImageDraw.Draw(background)
+
+
         current_time = time.time()
-        if current_time - last_enemy_added_time >= 5:
+        if current_time - end_time >= 5:
             enemy_type = random.choice([Asteroid, Meteor, Missile])
             enemies.append(enemy_type())
-            starcandy_type = random.choice([RedStarCandy, BlueStarCandy, YellowStarCandy])
-            candies.append(starcandy_type())
-            starcandy_type = random.choice([RedStarCandy, BlueStarCandy, YellowStarCandy])
-            candies.append(starcandy_type())
-            last_enemy_added_time = current_time
+            for _ in range (2):
+                starcandy_type = random.choice([RedStarCandy, BlueStarCandy, YellowStarCandy, RainbowStarCandy])
+                candies.append(starcandy_type())
+            end_time = current_time
 
         my_star.move(command)
 
@@ -78,6 +93,20 @@ def main(Display):
             time.sleep(0.01)
 
         enemies = [enemy for enemy in enemies if enemy.is_alive]
+
+        collided_candy = my_star.check_collision(candies)
+        if collided_candy:
+            if(candy == candies[0]):
+                get_red += 1
+            elif(candy == candies[1]):
+                get_blue += 1
+            elif(candy == candies[2]):
+                get_yellow += 1
+            elif(candy == candies[3]):
+                get_red += 1
+                get_blue += 1
+                get_yellow += 1
+            time.sleep(0.01)
 
 
         my_draw.rectangle((0, 0, int(Display.width), int(Display.height)), fill=(0, 0, 0, 100))
@@ -91,7 +120,16 @@ def main(Display):
         for i in range(my_star.life) :
             my_image.paste(my_star.life_image_resize,(x_offset, -65) , my_star.life_image_resize)
             x_offset += 15
-        my_draw.text((0, 15), "LIFE ", font=fnt, fill=(255,255,255))   
+        my_draw.text((0, 15), "LIFE ", font=fnt, fill=(255,255,255))  
+
+
+        # HAVE TO GET CANDY DISPLAY
+        my_image.paste(candies[0].appearance, (-35, 15), candies[0].appearance)
+        my_draw.text((10, 30), f"{get_blue}/{round1_candy[0]}" , font = fnt, fill=(255,255,255))
+        my_image.paste(candies[1].appearance, (0, 15), candies[1].appearance)
+        my_draw.text((45,30), f"{get_red}/{round1_candy[1]}", font = fnt, fill = (255,255,255))
+        my_image.paste(candies[2].appearance, (35, 15), candies[2].appearance)
+        my_draw.text((80,30), f"{get_yellow}/{round1_candy[2]}", font = fnt, fill = (255,255,255))
 
 
         for enemy in enemies:
@@ -101,14 +139,13 @@ def main(Display):
 
         for candy in candies:
             candy.move()
-            candy.draw(my_draw, my_image)
-    
+            candy.draw(my_draw, my_image) 
+
         for bullet in bullets:
             bullet.move()
         
         # 그리는 순서가 중요합니다. 배경을 먼저 깔고 위에 그림을 그리고 싶었는데
         # 그림을 그려놓고 배경으로 덮는 결과로 될 수 있습니다.
-
         #my_draw.rectangle((0, 0, int(Display.width), int(Display.height)), fill=(0, 0, 0, 100))
         #my_image.paste(re_background_image, (0,0))
         #my_star.draw_star(my_draw, my_image)  # my_circle 대신에 my_star로 변경

@@ -60,4 +60,16 @@ class Stars:
             ):
                 return enemy
         return None
+
+    def check_collision(self, candies):
+        for candy in candies:
+            if(
+                self.position_x < candy.position_x + candy.appearance.width // 2 and 
+                self.position_x + self.appearance.width // 2 > candy.position_x  and
+                self.position_y < candy.position_y + candy.appearance.height // 2 and
+                self.position_y + self.appearance.height // 2 > candy.position_y
+            ):
+                return candy
+        return None
+
         
