@@ -27,10 +27,18 @@ def main(Display):
     bullets=[]
 
     # 적 추가   
-    enemies = [Asteroid(), Meteor(), Missile()]
+    asteroid = Asteroid()
+    meteor = Meteor()
+    missile = Missile()
+    enemies = [asteroid, meteor, missile]
 
     # 별사탕 추가
-    candies = [RedStarCandy(), BlueStarCandy(), YellowStarCandy(), RainbowStarCandy()]
+    red_candy = RedStarCandy()
+    blue_candy = BlueStarCandy()
+    yellow_candy = YellowStarCandy()
+    rainbow_candy = RainbowStarCandy()
+    candies = [red_candy, blue_candy, yellow_candy, rainbow_candy]
+
     
     end_time = time.time()
 
@@ -66,10 +74,6 @@ def main(Display):
             bullets.append(bullet)
 
 
-        #star_candy = StarCandy(image_paths)
-        #star_candies.append(star_candy)
-        
-
         #background = Image.new("RGBA", (240, 240), (255, 255, 255, 255))
         #draw = ImageDraw.Draw(background)
 
@@ -86,27 +90,27 @@ def main(Display):
         my_star.move(command)
 
         collided_enemy = my_star.check_collision(enemies)
-        if collided_enemy and collided_enemy.is_alive:
-            collided_enemy.is_alive = False
-            my_star.life -= 1
-            print(f"현재 목숨 : {my_star.life}")
+        if collided_enemy:
+            if isinstance(collided_enemy, Missile):
+                my_star.life -= 2
+            else:
+                my_star.life -= 1
             time.sleep(0.01)
-
-        enemies = [enemy for enemy in enemies if enemy.is_alive]
 
         collided_candy = my_star.check_collision(candies)
         if collided_candy:
-            if(candy == candies[0]):
+            if isinstance(collided_candy, RedStarCandy):
                 get_red += 1
-            elif(candy == candies[1]):
+            elif isinstance(collided_candy, BlueStarCandy):
                 get_blue += 1
-            elif(candy == candies[2]):
+            elif isinstance(collided_candy, YellowStarCandy):
                 get_yellow += 1
-            elif(candy == candies[3]):
+            elif isinstance(collided_candy, RainbowStarCandy):
                 get_red += 1
                 get_blue += 1
                 get_yellow += 1
             time.sleep(0.01)
+
 
 
         my_draw.rectangle((0, 0, int(Display.width), int(Display.height)), fill=(0, 0, 0, 100))
@@ -124,11 +128,11 @@ def main(Display):
 
 
         # HAVE TO GET CANDY DISPLAY
-        my_image.paste(candies[0].appearance, (-35, 15), candies[0].appearance)
-        my_draw.text((10, 30), f"{get_blue}/{round1_candy[0]}" , font = fnt, fill=(255,255,255))
-        my_image.paste(candies[1].appearance, (0, 15), candies[1].appearance)
-        my_draw.text((45,30), f"{get_red}/{round1_candy[1]}", font = fnt, fill = (255,255,255))
-        my_image.paste(candies[2].appearance, (35, 15), candies[2].appearance)
+        my_image.paste(red_candy.appearance, (-35, 15), red_candy.appearance)
+        my_draw.text((10, 30), f"{get_red}/{round1_candy[0]}" , font = fnt, fill=(255,255,255))
+        my_image.paste(blue_candy.appearance, (0, 15), blue_candy.appearance)
+        my_draw.text((45,30), f"{get_blue}/{round1_candy[1]}", font = fnt, fill = (255,255,255))
+        my_image.paste(yellow_candy.appearance, (35, 15), yellow_candy.appearance)
         my_draw.text((80,30), f"{get_yellow}/{round1_candy[2]}", font = fnt, fill = (255,255,255))
 
 

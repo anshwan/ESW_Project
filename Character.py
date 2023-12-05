@@ -50,26 +50,37 @@ class Stars:
         background.paste(self.appearance, (self.position_x, self.position_y), self.appearance)
         #print("Star Position:", self.position_x, self.position_y, self.appearance.width, self.appearance.height)
 
-    def check_collision(self, enemies):
-        for enemy in enemies:
-            if(
-                self.position_x < enemy.position_x + enemy.appearance.width // 2 and 
-                self.position_x + self.appearance.width // 2 > enemy.position_x  and
-                self.position_y < enemy.position_y + enemy.appearance.height // 2 and
-                self.position_y + self.appearance.height // 2 > enemy.position_y
-            ):
-                return enemy
-        return None
-
     def check_collision(self, candies):
+        collided_candy = None
         for candy in candies:
             if(
-                self.position_x < candy.position_x + candy.appearance.width // 2 and 
-                self.position_x + self.appearance.width // 2 > candy.position_x  and
-                self.position_y < candy.position_y + candy.appearance.height // 2 and
-                self.position_y + self.appearance.height // 2 > candy.position_y
+                self.position_x < candy.position_x + candy.appearance.width // 2 - 32 and 
+                self.position_x + self.appearance.width // 2 > candy.position_x - 48  and
+                self.position_y < candy.position_y + candy.appearance.height // 2 - 32 and
+                self.position_y + self.appearance.height // 2 > candy.position_y - 32
             ):
-                return candy
-        return None
+                collided_candy = candy
+                break
 
-        
+        if collided_candy:
+            candies.remove(collided_candy)
+
+        return collided_candy
+    
+    def check_collision(self, enemies):
+        collided_enemy = None
+        for enemy in enemies:
+            if (
+                self.position_x < enemy.position_x + enemy.appearance.width // 2 - 32 and
+                self.position_x + self.appearance.width // 2 > enemy.position_x  and
+                self.position_y < enemy.position_y + enemy.appearance.height // 2 - 32 and
+                self.position_y + self.appearance.height // 2 > enemy.position_y 
+            ):
+                collided_enemy = enemy
+                break
+
+        if collided_enemy:
+            enemies.remove(collided_enemy)
+
+        return collided_enemy
+
