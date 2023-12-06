@@ -3,6 +3,18 @@ import random
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 
+def game_start(draw, image, Display):
+        game_start_fnt = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 30 )  
+        bg_image = Image.open('./images/space.png').convert('RGBA')
+        bg_image_resize = bg_image.resize((240 ,240))
+        draw.text((10,50), "STARCANDY", font=game_start_fnt, fill=(255,255,0))
+        draw.text((40,80), "ADVENTURE", font=game_start_fnt, fill=(255,255,255))
+        draw.text((70,170), "PRESS A TO START", font=ImageFont.load_default(), fill=(0,0,0))
+        Display.disp.image(image)
+        while Display.button_A.value:
+            time.sleep(0.1) 
+
+
 
 def game_over(draw, image, Display):
     game_over_fnt = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 38)   

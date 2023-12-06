@@ -9,6 +9,7 @@ from starcandy import RedStarCandy, BlueStarCandy, YellowStarCandy, RainbowStarC
 from enemy import Asteroid, Meteor, Missile
 import Game as game
 
+
 def main(Display):
     my_image = Image.new("RGBA", (Display.width, Display.height))
     my_draw = ImageDraw.Draw(my_image)
@@ -44,6 +45,8 @@ def main(Display):
     stage = 1
     # stage clear state 
     Isclear = False
+
+    isGameStart = False
     
     end_time = time.time()
 
@@ -56,11 +59,16 @@ def main(Display):
 
     # 획득한 red, blue, yellow candy의 개수
     get_candy = [0, 0, 0] 
-
     
     while True:
         if (my_star.life <= 0):
             game.game_over(my_draw, my_image, disp)
+
+    
+        if not isGameStart:
+            # 시작 화면 표시
+            game.game_start(my_draw, my_image, disp)
+            isGameStart = True
                 
 
         command = {'move': False, 'up_pressed': False, 'down_pressed': False, 'left_pressed': False, 'right_pressed': False}
@@ -89,12 +97,12 @@ def main(Display):
         # 랜덤한 적과 사탕 생성 후 떨어트리는 코드
         current_time = time.time()
         if current_time - end_time >= 3:
-            enemy_type = random.choice([Asteroid, Meteor, Missile])
-            enemies.append(enemy_type())
-            for _ in range (2):
+                enemy_type = random.choice([Asteroid, Meteor, Missile])
+                enemies.append(enemy_type())
+
                 starcandy_type = random.choice([RedStarCandy, BlueStarCandy, YellowStarCandy, RainbowStarCandy])
                 candies.append(starcandy_type())
-            end_time = current_time
+                end_time = current_time
 
         my_star.move(command)
 
@@ -104,8 +112,10 @@ def main(Display):
         if collided_enemy:
             if isinstance(collided_enemy, Missile):
                 my_star.life -= 2
-            else:
+            elif isinstance(collided_enemy, Meteor):
                 my_star.life -= 1
+            elif isinstance(collided_enemy, Asteroid):
+                get_candy = [x - 1 for x in get_candy]
             time.sleep(0.01)
 
         # 별사탕과의 충돌 시 EVENT
