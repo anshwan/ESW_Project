@@ -17,8 +17,7 @@ class Asteroid:
 
     def draw(self, draw, background):
         background.paste(self.appearance, (self.position_x, self.position_y), self.appearance)
-        #print("Asteroid Position:", self.position_x, self.position_y)
-        #draw.bitmap((self.position_x, self.position_y), self.appearance, fill = (255,255,255,255))
+        
 
 class Meteor:
     def __init__(self):

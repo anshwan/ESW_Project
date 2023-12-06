@@ -16,13 +16,6 @@ class Stars:
         self.life_image_resize = self.life_image.resize((150 ,150))
         
 
-
-    #def calculate_center(self):
-        #self.center_x = int(self.width  / 2)
-        #self.center_y = int(self.height / 2)
-        #self.position_x = int(self.center_x - self.appearance.width / 2)
-        #self.position_y = int(self.center_y - self.appearance.height / 2)
-
     def move(self, command = None):
         if command['move'] == False:
             self.state = None
@@ -48,7 +41,6 @@ class Stars:
 
     def draw_star(self, draw, background):
         background.paste(self.appearance, (self.position_x, self.position_y), self.appearance)
-        #print("Star Position:", self.position_x, self.position_y, self.appearance.width, self.appearance.height)
 
     def check_collision(self, candies):
         collided_candy = None

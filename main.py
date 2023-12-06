@@ -19,7 +19,6 @@ def main(Display):
     re_background_image = background_image.resize((240 ,240))
     my_image.paste(re_background_image, (0,0), re_background_image)
 
-    #my_draw.rectangle((0, 0, Display.width, Display.height))
     Display.disp.image(my_image)
 
     # 별 캐릭터 추가  
@@ -88,10 +87,6 @@ def main(Display):
         if not Display.button_A.value:
             bullet = Bullet(my_star.center, command)
             bullets.append(bullet)
-
-
-        #background = Image.new("RGBA", (240, 240), (255, 255, 255, 255))
-        #draw = ImageDraw.Draw(background)
 
 
         # 랜덤한 적과 사탕 생성 후 떨어트리는 코드
@@ -188,11 +183,6 @@ def main(Display):
 
         Display.disp.image(my_image)
         time.sleep(0.01)
-
-        #my_draw.rectangle((0, 0, int(Display.width), int(Display.height)), fill=(0, 0, 0, 100))
-        #my_image.paste(re_background_image, (0,0))
-        #my_star.draw_star(my_draw, my_image)
-
 
 if __name__ == '__main__':
     disp = Display()
