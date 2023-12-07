@@ -8,8 +8,9 @@ class Asteroid:
         self.appearance = self.image.resize((64,64))
         self.position_x = random.randint(-44,166)
         self.position_y = -128
-        self.state = 'alive'
+
         self.speed = 3
+        self.state = 'alive'
         self.is_alive = True
 
     def move(self):
@@ -26,6 +27,7 @@ class Meteor:
         self.position_x = random.randint(-44,166)
         self.position_y = -128
         self.speed = 4
+        self.state = 'alive'
         self.is_alive = True
     
     def move(self):
@@ -42,6 +44,7 @@ class Missile:
         self.position_x = random.randint(-44,166)
         self.position_y = -128
         self.speed = 5
+        self.state = 'alive'
         self.is_alive = True
 
     def move(self):

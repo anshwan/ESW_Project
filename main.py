@@ -42,6 +42,7 @@ def main(Display):
 
     # stage
     stage = 1
+
     # stage clear state 
     Isclear = False
 
@@ -65,9 +66,11 @@ def main(Display):
 
     
         if not isGameStart:
-            # 시작 화면 표시
+            # 시작 화면 표시    
             game.game_start(my_draw, my_image, disp)
             isGameStart = True
+            bullets=[]
+
                 
 
         command = {'move': False, 'up_pressed': False, 'down_pressed': False, 'left_pressed': False, 'right_pressed': False}
@@ -166,23 +169,31 @@ def main(Display):
             
 
         for enemy in enemies:
-            if enemy.is_alive:
+            if enemy.state != 'die':
                 enemy.move()
                 enemy.draw(my_draw, my_image)
-
+            
         for candy in candies:
             candy.move()
             candy.draw(my_draw, my_image) 
 
         for bullet in bullets:
+            bullet.collision_check(enemies, bullets)
             bullet.move()
+        
 
         for bullet in bullets:
             if bullet.state != 'hit':
-                my_draw.rectangle(tuple(bullet.position), outline = bullet.outline, fill = (0,0,225))
+                my_draw.rectangle(tuple(bullet.position), outline = bullet.outline, fill = (225,0,0))
+
+        # 총알 화면 벗어났는지 확인 후 제거
+        bullets = [bullet for bullet in bullets if not game.is_out_of_bounds(bullet.position, Display.width, Display.height)]
+
 
         Display.disp.image(my_image)
         time.sleep(0.01)
+
+        
 
 if __name__ == '__main__':
     disp = Display()

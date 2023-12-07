@@ -35,8 +35,6 @@ def stage_clear_display(draw, image, Display, star, stage):
     stage_clear_fnt = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 30)
     bg_image = Image.open('./images/space.png').convert('RGBA')
     bg_image_resize = bg_image.resize((240 ,240))
-    #star_image = Image.open('./images/starcandy_red.png').convert("RGBA")
-    #star_resize = star_image.resize((150,150))
     draw.rectangle((0, 0, Display.width, Display.height))
     image.paste(bg_image_resize, (0,0), bg_image_resize)
     star.draw_star(draw, image)
@@ -67,3 +65,8 @@ def addcandy(stage, stage_candy):
     
     return stage_candy
 
+
+
+def is_out_of_bounds(position, display_width, display_height):
+    x1, y1, x2, y2 = position
+    return x1 > display_width or x2 < 0 or y1 > display_height or y2 < 0
