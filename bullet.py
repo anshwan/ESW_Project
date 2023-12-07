@@ -54,15 +54,6 @@ class Bullet:
                     bullets.remove(self)
                 
 
-
-    def overlap(self, ego_position, other_position):
-        return (
-            ego_position[0] < other_position[2]
-            and ego_position[2] > other_position[0]
-            and ego_position[1] < other_position[3]
-            and ego_position[3] > other_position[1]
-        )
-
     def overlap(self, ego_position, enemy):
         return (
                 ego_position[0] < enemy.position_x + enemy.appearance.width // 2

@@ -18,7 +18,6 @@ def main(Display):
     background_image = Image.open('./images/space.png').convert('RGBA')
     re_background_image = background_image.resize((240 ,240))
     my_image.paste(re_background_image, (0,0), re_background_image)
-
     Display.disp.image(my_image)
 
     # 별 캐릭터 추가  
@@ -40,18 +39,20 @@ def main(Display):
     rainbow_candy = RainbowStarCandy()
     candies = [red_candy, blue_candy, yellow_candy, rainbow_candy]
 
-    # stage
+    # 스테이지
     stage = 1
 
-    # stage clear state 
+    # 스테이지 클리어 체크 
     Isclear = False
 
+    # 게임 스타트 체크
     isGameStart = False
     
     end_time = time.time()
 
     fnt = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 15)
 
+    #stage 
     stage_candy = []   
     for _ in range(3):
         random_number = random.randint(3, 5)
@@ -61,6 +62,7 @@ def main(Display):
     get_candy = [0, 0, 0] 
     
     while True:
+        # 게임 오버 체크
         if (my_star.life <= 0):
             game.game_over(my_draw, my_image, disp)
 
@@ -130,11 +132,10 @@ def main(Display):
             time.sleep(0.01)
 
 
-
+        #잔상 없애는 코드
         my_draw.rectangle((0, 0, int(Display.width), int(Display.height)), fill=(0, 0, 0, 100))
         my_image.paste(re_background_image, (0,0))
         my_star.draw_star(my_draw, my_image) 
-
 
 
         # 하트 DISPLAY
@@ -181,7 +182,6 @@ def main(Display):
             bullet.collision_check(enemies, bullets)
             bullet.move()
         
-
         for bullet in bullets:
             if bullet.state != 'hit':
                 my_draw.rectangle(tuple(bullet.position), outline = bullet.outline, fill = (225,0,0))
@@ -198,4 +198,4 @@ def main(Display):
 if __name__ == '__main__':
     disp = Display()
 
-    main(disp)
+    main(disp)  

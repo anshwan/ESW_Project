@@ -15,7 +15,6 @@ def game_start(draw, image, Display):
             time.sleep(0.1) 
 
 
-
 def game_over(draw, image, Display):
     game_over_fnt = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 38)   
     bg_image = Image.open('./images/space.png').convert('RGBA')
